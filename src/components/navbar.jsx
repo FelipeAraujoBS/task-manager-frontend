@@ -29,7 +29,7 @@ export default function Navbar() {
           className="flex items-center gap-1 text-gray-700 hover:text-blue-600 transition"
         >
           {homeIcon}
-          <span>Home</span>
+          <span>Inicio</span>
         </Link>
 
         {!isAuthenticated ? (
@@ -49,7 +49,7 @@ export default function Navbar() {
               className="flex items-center gap-1 text-gray-700 hover:text-blue-600 transition"
             >
               {dashboardIcon}
-              <span>Dashboard</span>
+              <span>Tarefas</span>
             </Link>
             <button
               onClick={handleLogout}
