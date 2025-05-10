@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+    <rect x="2" y="2" width="28" height="28" rx="3" fill="#4285F4" />
+
+    <rect x="6" y="5" width="20" height="22" rx="1" fill="#FFFFFF" />
+
+    <line x1="10" y1="10" x2="22" y2="10" stroke="#E0E0E0" stroke-width="1" />
+    <line x1="10" y1="15" x2="22" y2="15" stroke="#E0E0E0" stroke-width="1" />
+    <line x1="10" y1="20" x2="22" y2="20" stroke="#E0E0E0" stroke-width="1" />
+
+    <rect
+      x="8"
+      y="8"
+      width="3"
+      height="3"
+      rx="0.6"
+      fill="#FFFFFF"
+      stroke="#4285F4"
+      stroke-width="1"
+    />
+    <rect
+      x="8"
+      y="13"
+      width="3"
+      height="3"
+      rx="0.6"
+      fill="#FFFFFF"
+      stroke="#4285F4"
+      stroke-width="1"
+    />
+    <rect
+      x="8"
+      y="18"
+      width="3"
+      height="3"
+      rx="0.6"
+      fill="#4285F4"
+      stroke="#4285F4"
+      stroke-width="1"
+    />
+
+    <path
+      d="M9 19L9.5 19.5L10.5 18.5"
+      stroke="#FFFFFF"
+      stroke-width="0.8"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    />
+
+    <path
+      d="M22 23L24 25M24 23L24.5 22.5C24.8 22.2 24.8 21.7 24.5 21.4L23.6 20.5C23.3 20.2 22.8 20.2 22.5 20.5L22 21L24 23Z"
+      stroke="#4285F4"
+      stroke-width="1"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    />
+  </svg>
