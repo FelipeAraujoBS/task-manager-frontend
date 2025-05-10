@@ -3,11 +3,12 @@ import { Link } from "react-router-dom";
 
 export default function Home() {
   const isAuthenticated = localStorage.getItem("token");
+  const username = localStorage.getItem("username");
 
   return (
     <div className="min-h-screen flex flex-col justify-center items-center bg-gray-150 px-4 text-center">
       <h1 className="text-4xl font-bold text-gray-800 mb-4">
-        Bem-vindo ao Task Manager
+        Bem-vindo ao Task Manager {username ? username : ""}
       </h1>
       <p className="text-gray-600 mb-8 max-w-md">
         Organize suas tarefas, aumente sua produtividade e tenha controle total

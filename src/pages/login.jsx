@@ -16,10 +16,16 @@ export default function Login() {
 
     try {
       const res = await axios.post("http://localhost:5000/user/login", form);
+
       localStorage.setItem("token", res.data.token);
+      localStorage.setItem("username", res.data.username);
       navigate("/dashboard");
     } catch (err) {
-      setError(err.response?.data || "Erro ao fazer login");
+      setError(
+        err.response?.data?.message ||
+          err.response?.data ||
+          "Erro ao fazer login"
+      );
     }
   };
 
