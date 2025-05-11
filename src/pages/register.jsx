@@ -15,9 +15,8 @@ export default function Resgister() {
     e.preventDefault();
 
     try {
-      const res = await axios.post("http://localhost:5000/user/register", form);
-      localStorage.setItem("token", res.data.token);
-      navigate("/dashboard");
+      await axios.post("http://localhost:5000/user/register", form);
+      navigate("/login");
     } catch (err) {
       setError(err.response?.data || "Erro ao fazer registro do usuario");
     }

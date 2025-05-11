@@ -8,7 +8,7 @@ export default function Home() {
   return (
     <div className="min-h-screen flex flex-col justify-center items-center bg-gray-150 px-4 text-center">
       <h1 className="text-4xl font-bold text-gray-800 mb-4">
-        Bem-vindo ao Task Manager {username ? username : ""}
+        Bem-vindo ao Task Manager {isAuthenticated ? username : ""}
       </h1>
       <p className="text-gray-600 mb-8 max-w-md">
         Organize suas tarefas, aumente sua produtividade e tenha controle total
