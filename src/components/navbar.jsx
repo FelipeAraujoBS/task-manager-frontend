@@ -21,7 +21,7 @@ export default function Navbar() {
   return (
     <nav className="flex justify-between items-center p-6 bg-white shadow-md">
       <Link to="/" className="text-xl font-semibold text-blue-600">
-        Task Manager
+        Rotinando
       </Link>
       <div className="flex gap-10">
         <Link
