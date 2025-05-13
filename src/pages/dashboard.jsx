@@ -74,6 +74,20 @@ export default function Dashboard() {
     }
   };
 
+  const handleEdit = async (id, updatedData) => {
+    try {
+      await axios.put(`http://localhost:5000/task/update/${id}`, updatedData, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      fetchTasks();
+    } catch {
+      setError("Erro ao atualizar tarefa.");
+    }
+  };
+
   return (
     <div className="max-w-2xl mx-auto mt-10 p-4">
       <h1 className="text-2xl font-bold mb-4">Minhas Tarefas</h1>
@@ -137,7 +151,7 @@ export default function Dashboard() {
               <TaskCard
                 task={task}
                 onDelete={handleDelete}
-                onEdit={(t) => console.log("Editar:", t)}
+                onEdit={handleEdit}
               />
             </li>
           ))}
