@@ -20,11 +20,14 @@ export default function Dashboard() {
 
   const fetchTasks = async () => {
     try {
-      const res = await axios.get("http://localhost:5000/task/find", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const res = await axios.get(
+        "https://task-manager-api-zmo4.onrender.com/task/find",
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
 
       setTasks(res.data.Tarefas || []);
       setLoading(false);
@@ -44,7 +47,7 @@ export default function Dashboard() {
 
     try {
       await axios.post(
-        "http://localhost:5000/task/register",
+        "https://task-manager-api-zmo4.onrender.com/task/register",
         { title, description, completed },
         {
           headers: {
@@ -63,11 +66,14 @@ export default function Dashboard() {
 
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`http://localhost:5000/task/delete/${id}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      await axios.delete(
+        `https://task-manager-api-zmo4.onrender.com/task/delete/${id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
       fetchTasks(); // Atualiza a lista
     } catch {
       setError("Erro ao deletar tarefa.");
@@ -76,11 +82,15 @@ export default function Dashboard() {
 
   const handleEdit = async (id, updatedData) => {
     try {
-      await axios.put(`http://localhost:5000/task/update/${id}`, updatedData, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      await axios.put(
+        `https://task-manager-api-zmo4.onrender.com/task/update/${id}`,
+        updatedData,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
 
       fetchTasks();
     } catch {

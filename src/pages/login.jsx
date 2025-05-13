@@ -15,7 +15,10 @@ export default function Login() {
     e.preventDefault();
 
     try {
-      const res = await axios.post("http://localhost:5000/user/login", form);
+      const res = await axios.post(
+        "https://task-manager-api-zmo4.onrender.com/user/login",
+        form
+      );
 
       localStorage.setItem("token", res.data.token);
       localStorage.setItem("username", res.data.username);

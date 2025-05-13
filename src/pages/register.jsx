@@ -15,7 +15,10 @@ export default function Resgister() {
     e.preventDefault();
 
     try {
-      await axios.post("http://localhost:5000/user/register", form);
+      await axios.post(
+        "https://task-manager-api-zmo4.onrender.com/user/register",
+        form
+      );
       navigate("/login");
     } catch (err) {
       setError(err.response?.data || "Erro ao fazer registro do usuario");
