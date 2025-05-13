@@ -1,12 +1,16 @@
 // src/pages/Dashboard.jsx
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import TaskCard from "../components/taskCard";
 
 export default function Dashboard() {
   const [tasks, setTasks] = useState([]);
-  const [newTask, setNewTask] = useState("");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [showForm, setShowForm] = useState(false);
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
+  const [completed, setCompleted] = useState(false);
 
   const token = localStorage.getItem("token");
 
@@ -32,20 +36,26 @@ export default function Dashboard() {
 
   const handleCreateTask = async (e) => {
     e.preventDefault();
-    if (!newTask.trim()) return;
+    if (!title.trim()) return;
+
+    if (title !== "" && description !== "") {
+      setCompleted(true);
+    }
 
     try {
       await axios.post(
         "http://localhost:5000/task/register",
-        { name: newTask },
+        { title, description, completed },
         {
           headers: {
             Authorization: `Bearer ${token}`,
           },
         }
       );
-      setNewTask("");
-      fetchTasks(); // Atualiza a lista
+      setTitle("");
+      setDescription("");
+      setShowForm(false);
+      fetchTasks();
     } catch (err) {
       setError("Erro ao criar tarefa.");
     }
@@ -68,21 +78,51 @@ export default function Dashboard() {
     <div className="max-w-2xl mx-auto mt-10 p-4">
       <h1 className="text-2xl font-bold mb-4">Minhas Tarefas</h1>
 
-      <form onSubmit={handleCreateTask} className="mb-6 flex gap-2">
-        <input
-          type="text"
-          placeholder="Nova tarefa"
-          value={newTask}
-          onChange={(e) => setNewTask(e.target.value)}
-          className="flex-1 px-3 py-2 border rounded"
-        />
-        <button
-          type="submit"
-          className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
-        >
-          Adicionar
-        </button>
-      </form>
+      <div className="mb-6">
+        {!showForm ? (
+          <button
+            onClick={() => setShowForm(true)}
+            className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+          >
+            Adicionar Tarefa
+          </button>
+        ) : (
+          <form onSubmit={handleCreateTask} className="flex flex-col gap-2">
+            <input
+              type="text"
+              placeholder="Título da tarefa"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+              className="px-3 py-2 border rounded"
+            />
+            <textarea
+              placeholder="Descrição"
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+              className="px-3 py-2 border rounded"
+            />
+            <div className="flex gap-2">
+              <button
+                type="submit"
+                className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
+              >
+                Salvar
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  setShowForm(false);
+                  setTitle("");
+                  setDescription("");
+                }}
+                className="bg-gray-400 text-white px-4 py-2 rounded hover:bg-gray-500"
+              >
+                Cancelar
+              </button>
+            </div>
+          </form>
+        )}
+      </div>
 
       {loading ? (
         <p>Carregando...</p>
@@ -91,20 +131,14 @@ export default function Dashboard() {
       ) : tasks.length === 0 ? (
         <p>Nenhuma tarefa cadastrada.</p>
       ) : (
-        <ul className="space-y-3">
+        <ul className="space-y-4">
           {tasks.map((task) => (
-            <li
-              key={task._id}
-              className="flex justify-between items-center border p-2 rounded"
-            >
-              <span>{task.title}</span>
-              <span>{task.description}</span>
-              <button
-                onClick={() => handleDelete(task._id)}
-                className="text-sm text-red-600 hover:underline"
-              >
-                Deletar
-              </button>
+            <li key={task._id}>
+              <TaskCard
+                task={task}
+                onDelete={handleDelete}
+                onEdit={(t) => console.log("Editar:", t)}
+              />
             </li>
           ))}
         </ul>
