@@ -2,50 +2,43 @@
 
 Este é o frontend do projeto Task Manager, uma aplicação web para gerenciamento de tarefas com autenticação. Desenvolvido em React com estilização utilizando Tailwind CSS.
 
-✅ Funcionalidades
-
--Cadastro de usuários (/register)
-
--Login com autenticação JWT (/login)
-
--Navbar com renderização condicional (Login / Logout)
-
--Roteamento protegido via PrivateRoute
-
--Dashboard com:
-
--Listagem de tarefas
-
--Criação de tarefas(Em desenvolvimento)
-
--Exclusão de tarefas
-
--Feedback de erros no login e dashboard
-
--Consumo de API RESTful desenvolvida em Node.js(Task Manager API)
+#Funcionalidades
+✅ Autenticação de Usuário: Sistema seguro de login e registro
+✅ Painel de Controle (Dashboard): Visão geral de todas as tarefas com indicadores de status
+✅ Gerenciamento de Tarefas: Criar, editar, excluir e marcar tarefas como concluídas
+✅ Design Responsivo: Funciona perfeitamente em dispositivos desktop e móveis
+✅ Rotas Privadas: Rotas protegidas que exigem autenticação
+✅ Consumo de API RESTful desenvolvida em Node.js(Task Manager API)
 
 🚀 Tecnologias utilizadas
 
-  -React
+ Frontend: React, React Router
 
-  -React Router Dom
+ Estilização: CSS/Tailwind CSS
 
-  -Axios
+ Gerenciamento de Estado: React Context API(Em desenvolvimento)
 
-  -Tailwind CSS
+ Autenticação: Autenticação baseada em token JWT
 
-  -Vite (ou Create React App, dependendo da base)
 
-  -Heroicons
-
-📂 Estrutura de pastas (simplificada)
+📂 Estrutura de pastas
 
 ```bash
 src/
 ├── assets/           # Ícones personalizados
+│   └── abaIcon.svg
+│   └── icons.svg
 ├── components/       # Componentes reutilizáveis (Navbar, etc)
-├── pages/            # Páginas principais (Home, Login, Register, Dashboard)
-├── routes/           # Rotas e componentes de proteção (PrivateRoute)
+│   ├── navbar.jsx
+│   ├── privateRoutes.jsx
+│   └── taskCard.jsx
+├── pages/  # Páginas principais (Home, Login, Register, Dashboard)
+│   ├── dashboard.jsx
+│   ├── home.jsx
+│   ├── login.jsx
+│   └── register.jsx 
+├── routes/ # Rotas
+│   ├── routes.jsx           
 ├── App.jsx
 └── main.jsx
 ```
@@ -75,6 +68,24 @@ cd task-manager-frontend
   http://localhost:5173
   ```
 
+#Como Usar
+1. Registre uma nova conta ou faça login com credenciais existentes
+
+2. Vá até o painel para visualizar e gerenciar suas tarefas
+
+3. Crie novas tarefas preenchendo o formulário de tarefa
+
+4. Edite ou exclua tarefas usando os controles em cada cartão de tarefa
+
+5. Marque as tarefas como concluídas clicando na caixa de seleção
+
+Capturas de Tela
+Página Inicial
+
+Página de Login
+
+Painel de Controle
+
 ⚠️ Certifique-se de que a API backend está rodando em http://localhost:5000 (ou atualize os endpoints no código).
 
 🔐 Ambiente
@@ -83,11 +94,9 @@ No momento, os tokens são armazenados via localStorage. Futuramente você pode 
 
 💡 Melhorias futuras
 
--Editar tarefas
 -Marcar como concluída
 -Filtro por status (pendente, concluída)
--Responsividade completa (mobile-first)
--Validações no formulário de login e registro
+-Categorias de tarefas representadas por cores distintas
 
 ✍️ Autor
 
