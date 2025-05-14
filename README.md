@@ -12,14 +12,13 @@ Este é o frontend do projeto Task Manager, uma aplicação web para gerenciamen
 
 🚀 Tecnologias utilizadas
 
- Frontend: React, React Router
+Frontend: React, React Router
 
- Estilização: CSS/Tailwind CSS
+Estilização: CSS/Tailwind CSS
 
- Gerenciamento de Estado: React Context API(Em desenvolvimento)
+Gerenciamento de Estado: React Context API(Em desenvolvimento)
 
- Autenticação: Autenticação baseada em token JWT
-
+Autenticação: Autenticação baseada em token JWT
 
 📂 Estrutura de pastas
 
@@ -36,39 +35,42 @@ src/
 │   ├── dashboard.jsx
 │   ├── home.jsx
 │   ├── login.jsx
-│   └── register.jsx 
+│   └── register.jsx
 ├── routes/ # Rotas
-│   ├── routes.jsx           
+│   ├── routes.jsx
 ├── App.jsx
 └── main.jsx
 ```
 
 ⚙️ Como rodar localmente
 
-  1. Clone o repositório:
-     
+1. Clone o repositório:
+
 ```bash
 git clone https://github.com/seu-usuario/task-manager-frontend.git
 cd task-manager-frontend
 ```
-  2. Instale as dependências:
 
-  ```bash
-  npm install
-  ```
-  3. Rode a aplicação:
+2. Instale as dependências:
 
- ```bash
-  npm run dev
-  ```
+```bash
+npm install
+```
 
-  4. Acesse no navegador:
+3. Rode a aplicação:
 
-  ```bash
-  http://localhost:5173
-  ```
+```bash
+ npm run dev
+```
+
+4. Acesse no navegador:
+
+```bash
+http://localhost:5173
+```
 
 #Como Usar
+
 1. Registre uma nova conta ou faça login com credenciais existentes
 
 2. Vá até o painel para visualizar e gerenciar suas tarefas
@@ -80,11 +82,18 @@ cd task-manager-frontend
 5. Marque as tarefas como concluídas clicando na caixa de seleção
 
 Capturas de Tela
+
 Página Inicial
+
+ <img src="./src/assets/imgs/home.png" alt="homepage"/>
 
 Página de Login
 
-Painel de Controle
+<img src="./src/assets/imgs/login.png" alt="homepage"/>
+
+Painel de Registro
+
+<img src="./src/assets/imgs/register.png" alt="homepage"/>
 
 ⚠️ Certifique-se de que a API backend está rodando em http://localhost:5000 (ou atualize os endpoints no código).
 
