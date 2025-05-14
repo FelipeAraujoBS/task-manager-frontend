@@ -69,7 +69,7 @@ npm install
 http://localhost:5173
 ```
 
-#Como Usar
+⚙️ *Como Usar*
 
 1. Registre uma nova conta ou faça login com credenciais existentes
 
@@ -81,7 +81,7 @@ http://localhost:5173
 
 5. Marque as tarefas como concluídas clicando na caixa de seleção
 
-Capturas de Tela
+📝 *Capturas de Tela*
 
 Página Inicial
 
