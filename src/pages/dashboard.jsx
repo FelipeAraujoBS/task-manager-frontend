@@ -13,6 +13,7 @@ export default function Dashboard() {
   const [completed, setCompleted] = useState(false);
   const [category, setCategory] = useState("");
   const [priority, setPriority] = useState("");
+  const [dueDate, setDueDate] = useState("");
 
   const token = localStorage.getItem("token");
 
@@ -20,11 +21,16 @@ export default function Dashboard() {
     fetchTasks();
   }, []);
 
+  console.log(dueDate);
+
+  const [year, month, day] = dueDate.split("-").map(Number);
+  const localDate = new Date(year, month - 1, day, 12);
+
   const fetchTasks = async () => {
     try {
       const res = await axios.get(
-        "https://task-manager-api-zmo4.onrender.com/task/find",
-        //"http://localhost:5000/task/find",
+        //"https://task-manager-api-zmo4.onrender.com/task/find",
+        "http://localhost:5000/task/find",
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -41,13 +47,27 @@ export default function Dashboard() {
 
   const handleCreateTask = async (e) => {
     e.preventDefault();
-    if (!title.trim() || !description.trim()) return;
+    if (
+      !title.trim() ||
+      !description.trim() ||
+      !category ||
+      !priority ||
+      !dueDate
+    )
+      return;
 
     try {
       const res = await axios.post(
-        "https://task-manager-api-zmo4.onrender.com/task/register",
-        //"http://localhost:5000/task/register",
-        { title, description, category, priority, completed },
+        //"https://task-manager-api-zmo4.onrender.com/task/register",
+        "http://localhost:5000/task/register",
+        {
+          title,
+          description,
+          category,
+          priority,
+          completed,
+          dueDate: localDate.toISOString(),
+        },
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -61,6 +81,7 @@ export default function Dashboard() {
       setDescription("");
       setCategory("");
       setPriority("");
+      setDueDate("");
       setCompleted(false);
       setShowForm(false);
       fetchTasks();
@@ -72,8 +93,8 @@ export default function Dashboard() {
   const handleDelete = async (id) => {
     try {
       await axios.delete(
-        `https://task-manager-api-zmo4.onrender.com/task/delete/${id}`,
-        //`http://localhost:5000/task/delete/${id}`,
+        //`https://task-manager-api-zmo4.onrender.com/task/delete/${id}`,
+        `http://localhost:5000/task/delete/${id}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -89,8 +110,8 @@ export default function Dashboard() {
   const handleEdit = async (id, updatedData) => {
     try {
       await axios.put(
-        `https://task-manager-api-zmo4.onrender.com/task/update/${id}`,
-        //`http://localhost:5000/task/update/${id}`,
+        //`https://task-manager-api-zmo4.onrender.com/task/update/${id}`,
+        `http://localhost:5000/task/update/${id}`,
         updatedData,
         {
           headers: {
@@ -156,39 +177,55 @@ export default function Dashboard() {
               <option value="financas">Finanças</option>
               <option value="outros">Outros</option>
             </select>
-            <div className="flex flex-col">
-              <span className="mb-1 font-medium">Prioridade:</span>
-              <div className="flex gap-2">
-                {["Baixa", "Media", "Alta"].map((level) => (
-                  <label
-                    key={level}
-                    className={`cursor-pointer px-4 py-2 rounded border transition-all ${
-                      priority === level
-                        ? "bg-blue-600 text-white border-blue-600"
-                        : "bg-white text-gray-800 border-gray-300 hover:bg-gray-100"
-                    }`}
-                    onClick={() => {
-                      const value =
-                        level.charAt(0).toUpperCase() + level.slice(1);
-
-                      setPriority(value);
-                    }}
-                  >
-                    <input
-                      type="radio"
-                      value={level}
-                      checked={priority === level}
-                      onChange={() => {
+            <div className="flex justify-between">
+              <div>
+                <span className="mb-1 font-medium">Prioridade:</span>
+                <div className="flex gap-2">
+                  {["Baixa", "Media", "Alta"].map((level) => (
+                    <label
+                      key={level}
+                      className={`cursor-pointer px-4 py-2 rounded border transition-all ${
+                        priority === level
+                          ? "bg-blue-600 text-white border-blue-600"
+                          : "bg-white text-gray-800 border-gray-300 hover:bg-gray-100"
+                      }`}
+                      onClick={() => {
                         const value =
                           level.charAt(0).toUpperCase() + level.slice(1);
 
                         setPriority(value);
                       }}
-                      className="hidden"
-                    />
-                    {level.charAt(0).toUpperCase() + level.slice(1)}
-                  </label>
-                ))}
+                    >
+                      <input
+                        type="radio"
+                        value={level}
+                        checked={priority === level}
+                        onChange={() => {
+                          const value =
+                            level.charAt(0).toUpperCase() + level.slice(1);
+
+                          setPriority(value);
+                        }}
+                        className="hidden"
+                      />
+                      {level.charAt(0).toUpperCase() + level.slice(1)}
+                    </label>
+                  ))}
+                </div>
+              </div>
+              <div className="mr-12 gap-2 items-center">
+                <label htmlFor="dueDate" className="font-medium">
+                  Prazo:
+                </label>
+                <div>
+                  <input
+                    type="date"
+                    id="dueDate"
+                    value={dueDate}
+                    onChange={(e) => setDueDate(e.target.value)}
+                    className="px-3 py-2 border rounded"
+                  />
+                </div>
               </div>
             </div>
 
@@ -207,6 +244,7 @@ export default function Dashboard() {
                   setDescription("");
                   setCategory("");
                   setPriority("");
+                  setDueDate("");
                 }}
                 className="bg-gray-400 text-white px-4 py-2 rounded hover:bg-gray-500"
               >
