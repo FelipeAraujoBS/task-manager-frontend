@@ -24,9 +24,9 @@ export default function TaskCard({ task, onDelete, onEdit }) {
   };
 
   return (
-    <div className="bg-white shadow-md rounded-xl p-4 border border-gray-200 flex flex-col gap-2">
+    <div className="bg-white shadow-lg rounded-xl border border-gray-200 p-4">
       {isEditing ? (
-        <>
+        <div className="flex flex-col gap-2">
           <input
             type="text"
             value={editTitle}
@@ -52,29 +52,51 @@ export default function TaskCard({ task, onDelete, onEdit }) {
               Cancelar
             </button>
           </div>
-        </>
+        </div>
       ) : (
         <>
-          <div>
-            <h2 className="text-lg font-semibold text-gray-800">
-              {task.title}
-            </h2>
-            <p className="text-sm text-gray-600">
-              {task.description || "Sem descrição."}
-            </p>
+          <div className="flex items-center gap-2 text-lg font-bold text-gray-800 mb-2">
+            🏷️ {task.title}
           </div>
-          <div className="flex justify-end gap-2 mt-2">
+
+          <hr className="my-2" />
+
+          <div className="flex justify-between text-sm text-gray-600">
+            <span>📂 Categoria: {task.category || "Não definida"}</span>
+            <span>🔥 Prioridade: {task.priority || "Não definida"}</span>
+          </div>
+
+          <div className="mt-1 text-sm text-gray-600">
+            🗓️ Prazo:{" "}
+            {task.dueDate
+              ? new Date(task.dueDate).toLocaleDateString("pt-BR")
+              : "Sem prazo"}
+          </div>
+
+          <div className="mt-4 text-sm text-gray-800">
+            ✏️ {task.description || "Sem descrição."}
+          </div>
+
+          <hr className="my-3" />
+
+          <div className="flex justify-end gap-2">
+            <button
+              onClick={() => onEdit(task._id, { completed: !task.completed })}
+              className="text-sm px-3 py-1 rounded bg-green-600 text-white hover:bg-green-700"
+            >
+              ✔️ Concluir
+            </button>
             <button
               onClick={() => setIsEditing(true)}
-              className="px-3 py-1 text-sm rounded bg-blue-600 text-white hover:bg-blue-700"
+              className="text-sm px-3 py-1 rounded bg-blue-600 text-white hover:bg-blue-700"
             >
-              Editar
+              ✏️ Editar
             </button>
             <button
               onClick={() => onDelete(task._id)}
-              className="px-3 py-1 text-sm rounded bg-red-500 text-white hover:bg-red-600"
+              className="text-sm px-3 py-1 rounded bg-red-600 text-white hover:bg-red-700"
             >
-              Deletar
+              🗑️ Deletar
             </button>
           </div>
         </>
