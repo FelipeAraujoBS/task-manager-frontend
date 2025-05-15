@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { colors, colorClasses } from "../assets/colorMap";
 
 export default function TaskCard({ task, onDelete, onEdit }) {
   const [isEditing, setIsEditing] = useState(false);
@@ -6,6 +7,8 @@ export default function TaskCard({ task, onDelete, onEdit }) {
   const [editDescription, setEditDescription] = useState(
     task.description || ""
   );
+
+  const categoryColor = colorClasses[colors[task.category] || "white"];
 
   const handleSave = async () => {
     if (!editTitle.trim()) return;
@@ -55,7 +58,9 @@ export default function TaskCard({ task, onDelete, onEdit }) {
         </div>
       ) : (
         <>
-          <div className="flex items-center gap-2 text-lg font-bold text-gray-800 mb-2">
+          <div
+            className={`flex items-center gap-2 text-lg font-bold ${categoryColor} text-gray-800 mb-2`}
+          >
             🏷️ {task.title}
           </div>
 

@@ -24,6 +24,7 @@ export default function Dashboard() {
     try {
       const res = await axios.get(
         "https://task-manager-api-zmo4.onrender.com/task/find",
+        //"http://localhost:5000/task/find",
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -45,6 +46,7 @@ export default function Dashboard() {
     try {
       const res = await axios.post(
         "https://task-manager-api-zmo4.onrender.com/task/register",
+        //"http://localhost:5000/task/register",
         { title, description, category, priority, completed },
         {
           headers: {
@@ -71,6 +73,7 @@ export default function Dashboard() {
     try {
       await axios.delete(
         `https://task-manager-api-zmo4.onrender.com/task/delete/${id}`,
+        //`http://localhost:5000/task/delete/${id}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -87,6 +90,7 @@ export default function Dashboard() {
     try {
       await axios.put(
         `https://task-manager-api-zmo4.onrender.com/task/update/${id}`,
+        //`http://localhost:5000/task/update/${id}`,
         updatedData,
         {
           headers: {
@@ -134,10 +138,18 @@ export default function Dashboard() {
               id="category"
               name="categories"
               value={category}
-              onChange={(e) => setCategory(e.target.value)}
+              onChange={(e) => {
+                const value =
+                  e.target.value.charAt(0).toUpperCase() +
+                  e.target.value.slice(1);
+
+                setCategory(value);
+              }}
               className="px-3 py-2 border rounded"
             >
-              <option value="">Selecione uma categoria</option>
+              <option value="">
+                {category === "" ? "Selecione uma categoria" : category}
+              </option>
               <option value="trabalho">Trabalho</option>
               <option value="estudo">Estudo</option>
               <option value="negocios">Negócios</option>
@@ -147,7 +159,7 @@ export default function Dashboard() {
             <div className="flex flex-col">
               <span className="mb-1 font-medium">Prioridade:</span>
               <div className="flex gap-2">
-                {["baixa", "media", "alta"].map((level) => (
+                {["Baixa", "Media", "Alta"].map((level) => (
                   <label
                     key={level}
                     className={`cursor-pointer px-4 py-2 rounded border transition-all ${
@@ -155,13 +167,23 @@ export default function Dashboard() {
                         ? "bg-blue-600 text-white border-blue-600"
                         : "bg-white text-gray-800 border-gray-300 hover:bg-gray-100"
                     }`}
-                    onClick={() => setPriority(level)}
+                    onClick={() => {
+                      const value =
+                        level.charAt(0).toUpperCase() + level.slice(1);
+
+                      setPriority(value);
+                    }}
                   >
                     <input
                       type="radio"
                       value={level}
                       checked={priority === level}
-                      onChange={() => setPriority(level)}
+                      onChange={() => {
+                        const value =
+                          level.charAt(0).toUpperCase() + level.slice(1);
+
+                        setPriority(value);
+                      }}
                       className="hidden"
                     />
                     {level.charAt(0).toUpperCase() + level.slice(1)}
