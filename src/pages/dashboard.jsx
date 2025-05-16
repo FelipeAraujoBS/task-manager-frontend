@@ -21,16 +21,14 @@ export default function Dashboard() {
     fetchTasks();
   }, []);
 
-  console.log(dueDate);
-
   const [year, month, day] = dueDate.split("-").map(Number);
   const localDate = new Date(year, month - 1, day, 12);
 
   const fetchTasks = async () => {
     try {
       const res = await axios.get(
-        "https://task-manager-api-zmo4.onrender.com/task/find",
-        //"http://localhost:5000/task/find",
+        //"https://task-manager-api-zmo4.onrender.com/task/find",
+        "http://localhost:5000/task/find",
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -58,8 +56,8 @@ export default function Dashboard() {
 
     try {
       const res = await axios.post(
-        "https://task-manager-api-zmo4.onrender.com/task/register",
-        //"http://localhost:5000/task/register",
+        //"https://task-manager-api-zmo4.onrender.com/task/register",
+        "http://localhost:5000/task/register",
         {
           title,
           description,
@@ -93,8 +91,8 @@ export default function Dashboard() {
   const handleDelete = async (id) => {
     try {
       await axios.delete(
-        `https://task-manager-api-zmo4.onrender.com/task/delete/${id}`,
-        //`http://localhost:5000/task/delete/${id}`,
+        //`https://task-manager-api-zmo4.onrender.com/task/delete/${id}`,
+        `http://localhost:5000/task/delete/${id}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -110,8 +108,8 @@ export default function Dashboard() {
   const handleEdit = async (id, updatedData) => {
     try {
       await axios.put(
-        `https://task-manager-api-zmo4.onrender.com/task/update/${id}`,
-        //`http://localhost:5000/task/update/${id}`,
+        //`https://task-manager-api-zmo4.onrender.com/task/update/${id}`,
+        `http://localhost:5000/task/update/${id}`,
         updatedData,
         {
           headers: {
