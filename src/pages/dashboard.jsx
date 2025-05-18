@@ -17,7 +17,6 @@ export default function Dashboard() {
   const [totalPages, setTotalPages] = useState(1);
   const [totalTasks, setTotalTasks] = useState(0);
   const [page, setPage] = useState(1);
-  const [taskColor, setTaskColor] = useState("");
 
   const token = localStorage.getItem("token");
 
@@ -36,7 +35,8 @@ export default function Dashboard() {
   const fetchTasks = async () => {
     try {
       const res = await axios.get(
-        `http://localhost:5000/task/find?page=${page}`,
+        `https://task-manager-api-zmo4.onrender.com/task/find?page=${page}`,
+        //`http://localhost:5000/task/find?page=${page}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -71,7 +71,8 @@ export default function Dashboard() {
 
     try {
       await axios.post(
-        "http://localhost:5000/task/register",
+        "https://task-manager-api-zmo4.onrender.com/task/register",
+        //"http://localhost:5000/task/register",
         {
           title,
           description,
@@ -102,11 +103,15 @@ export default function Dashboard() {
 
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`http://localhost:5000/task/delete/${id}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      await axios.delete(
+        `https://task-manager-api-zmo4.onrender.com/task/delete/${id}`,
+        //`http://localhost:5000/task/delete/${id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
       fetchTasks();
     } catch {
       setError("Erro ao deletar tarefa.");
@@ -115,11 +120,16 @@ export default function Dashboard() {
 
   const handleEdit = async (id, updatedData) => {
     try {
-      await axios.put(`http://localhost:5000/task/update/${id}`, updatedData, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      await axios.put(
+        `https://task-manager-api-zmo4.onrender.com/task/update/${id}`,
+        //`http://localhost:5000/task/update/${id}`,
+        updatedData,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
       fetchTasks();
     } catch {
       setError("Erro ao atualizar tarefa.");
