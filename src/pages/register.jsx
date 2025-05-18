@@ -16,8 +16,8 @@ export default function Resgister() {
 
     try {
       await axios.post(
-        "https://task-manager-api-zmo4.onrender.com/user/register",
-        //"http://localhost:5000/user/register",
+        //"https://task-manager-api-zmo4.onrender.com/user/register",
+        "http://localhost:5000/user/register",
         form
       );
       navigate("/login");

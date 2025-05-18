@@ -1,7 +1,7 @@
-// src/pages/Dashboard.jsx
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import TaskCard from "../components/taskCard";
+import { colors, colorClasses } from "../assets/colorMap";
 
 export default function Dashboard() {
   const [tasks, setTasks] = useState([]);
@@ -17,10 +17,9 @@ export default function Dashboard() {
   const [totalPages, setTotalPages] = useState(1);
   const [totalTasks, setTotalTasks] = useState(0);
   const [page, setPage] = useState(1);
+  const [taskColor, setTaskColor] = useState("");
 
   const token = localStorage.getItem("token");
-
-  console.log(page);
 
   useEffect(() => {
     fetchTasks();
@@ -37,8 +36,7 @@ export default function Dashboard() {
   const fetchTasks = async () => {
     try {
       const res = await axios.get(
-        `https://task-manager-api-zmo4.onrender.com/task/find?page=${page}`,
-        //`http://localhost:5000/task/find?page=${page}`,
+        `http://localhost:5000/task/find?page=${page}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -49,7 +47,6 @@ export default function Dashboard() {
       setTotalTasks(res.data.totalTasks);
       setTotalPages(res.data.totalPages);
       setPage(res.data.page);
-
       setTasks(res.data.tarefas || []);
       setLoading(false);
     } catch (err) {
@@ -73,9 +70,8 @@ export default function Dashboard() {
     const localDate = new Date(year, month - 1, day, 12);
 
     try {
-      const res = await axios.post(
-        "https://task-manager-api-zmo4.onrender.com/task/register",
-        //"http://localhost:5000/task/register",
+      await axios.post(
+        "http://localhost:5000/task/register",
         {
           title,
           description,
@@ -106,15 +102,11 @@ export default function Dashboard() {
 
   const handleDelete = async (id) => {
     try {
-      await axios.delete(
-        `https://task-manager-api-zmo4.onrender.com/task/delete/${id}`,
-        //`http://localhost:5000/task/delete/${id}`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      await axios.delete(`http://localhost:5000/task/delete/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
       fetchTasks();
     } catch {
       setError("Erro ao deletar tarefa.");
@@ -123,24 +115,33 @@ export default function Dashboard() {
 
   const handleEdit = async (id, updatedData) => {
     try {
-      await axios.put(
-        `https://task-manager-api-zmo4.onrender.com/task/update/${id}`,
-        //`http://localhost:5000/task/update/${id}`,
-        updatedData,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      await axios.put(`http://localhost:5000/task/update/${id}`, updatedData, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
       fetchTasks();
     } catch {
       setError("Erro ao atualizar tarefa.");
     }
   };
 
+  // Agrupa tarefas por categoria
+  const groupTasksByCategory = (tasks) => {
+    return tasks.reduce((groups, task) => {
+      const category = task.category || "Sem Categoria";
+      if (!groups[category]) {
+        groups[category] = [];
+      }
+      groups[category].push(task);
+      return groups;
+    }, {});
+  };
+
+  const groupedTasks = groupTasksByCategory(tasks);
+
   return (
-    <div className="max-w-2xl mx-auto mt-10 p-4">
+    <div className="max-w-7xl mx-auto mt-10 p-4">
       <h1 className="text-2xl font-bold mb-4 text-center">Minhas Tarefas</h1>
 
       <div className="mb-6">
@@ -170,14 +171,11 @@ export default function Dashboard() {
               className="px-3 py-2 border rounded"
             />
             <select
-              id="category"
-              name="categories"
               value={category}
               onChange={(e) => {
                 const value =
                   e.target.value.charAt(0).toUpperCase() +
                   e.target.value.slice(1);
-
                 setCategory(value);
               }}
               className="px-3 py-2 border rounded"
@@ -191,6 +189,7 @@ export default function Dashboard() {
               <option value="financas">Finanças</option>
               <option value="outros">Outros</option>
             </select>
+
             <div className="flex justify-between">
               <div>
                 <span className="mb-1 font-medium">Prioridade:</span>
@@ -206,7 +205,6 @@ export default function Dashboard() {
                       onClick={() => {
                         const value =
                           level.charAt(0).toUpperCase() + level.slice(1);
-
                         setPriority(value);
                       }}
                     >
@@ -217,7 +215,6 @@ export default function Dashboard() {
                         onChange={() => {
                           const value =
                             level.charAt(0).toUpperCase() + level.slice(1);
-
                           setPriority(value);
                         }}
                         className="hidden"
@@ -227,6 +224,7 @@ export default function Dashboard() {
                   ))}
                 </div>
               </div>
+
               <div className="mr-12 gap-2 items-center">
                 <label htmlFor="dueDate" className="font-medium">
                   Prazo:
@@ -276,21 +274,37 @@ export default function Dashboard() {
       ) : tasks.length === 0 ? (
         <p>Nenhuma tarefa cadastrada.</p>
       ) : (
-        <ul className="space-y-4">
+        <>
           <p className="text-sm text-gray-500 mb-2">
             Total de tarefas: {totalTasks}
           </p>
-          {tasks.map((task) => (
-            <li key={task._id}>
-              <TaskCard
-                task={task}
-                onDelete={handleDelete}
-                onEdit={handleEdit}
-              />
-            </li>
-          ))}
-        </ul>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {Object.entries(groupedTasks).map(([category, tasks]) => (
+              <div key={category} className={`rounded shadow p-4`}>
+                <h2
+                  className={`text-lg ${
+                    colorClasses[colors[category]] || "bg-white"
+                  } text-black font-semibold mb-4 text-center p-1.5 rounded`}
+                >
+                  {category}
+                </h2>
+                <ul className="space-y-2">
+                  {tasks.map((task) => (
+                    <li key={task._id}>
+                      <TaskCard
+                        task={task}
+                        onDelete={handleDelete}
+                        onEdit={handleEdit}
+                      />
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </div>
+        </>
       )}
+
       {tasks.length > 0 && (
         <div className="flex justify-between items-center mt-6">
           <button
