@@ -3,7 +3,7 @@ export const colors = {
   Trabalho: "brown",
   Estudo: "blue",
   Negocios: "red",
-  Financias: "gray",
+  Financas: "gray",
   Outros: "green",
 };
 

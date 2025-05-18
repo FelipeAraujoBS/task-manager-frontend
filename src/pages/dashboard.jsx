@@ -14,28 +14,43 @@ export default function Dashboard() {
   const [category, setCategory] = useState("");
   const [priority, setPriority] = useState("");
   const [dueDate, setDueDate] = useState("");
+  const [totalPages, setTotalPages] = useState(1);
+  const [totalTasks, setTotalTasks] = useState(0);
+  const [page, setPage] = useState(1);
 
   const token = localStorage.getItem("token");
 
+  console.log(page);
+
   useEffect(() => {
     fetchTasks();
-  }, []);
+  }, [page]);
 
-  const [year, month, day] = dueDate.split("-").map(Number);
-  const localDate = new Date(year, month - 1, day, 12);
+  const handlePrevPage = () => {
+    if (page > 1) setPage(page - 1);
+  };
+
+  const handleNextPage = () => {
+    if (page < totalPages) setPage(page + 1);
+  };
 
   const fetchTasks = async () => {
     try {
       const res = await axios.get(
         //"https://task-manager-api-zmo4.onrender.com/task/find",
-        "http://localhost:5000/task/find",
+        `http://localhost:5000/task/find?page=${page}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
           },
         }
       );
-      setTasks(res.data.Tarefas || []);
+
+      setTotalTasks(res.data.totalTasks);
+      setTotalPages(res.data.totalPages);
+      setPage(res.data.page);
+
+      setTasks(res.data.tarefas || []);
       setLoading(false);
     } catch (err) {
       setError("Erro ao carregar tarefas.");
@@ -53,6 +68,9 @@ export default function Dashboard() {
       !dueDate
     )
       return;
+
+    const [year, month, day] = dueDate.split("-").map(Number);
+    const localDate = new Date(year, month - 1, day, 12);
 
     try {
       const res = await axios.post(
@@ -72,8 +90,6 @@ export default function Dashboard() {
           },
         }
       );
-
-      console.log(res);
 
       setTitle("");
       setDescription("");
@@ -261,6 +277,9 @@ export default function Dashboard() {
         <p>Nenhuma tarefa cadastrada.</p>
       ) : (
         <ul className="space-y-4">
+          <p className="text-sm text-gray-500 mb-2">
+            Total de tarefas: {totalTasks}
+          </p>
           {tasks.map((task) => (
             <li key={task._id}>
               <TaskCard
@@ -271,6 +290,35 @@ export default function Dashboard() {
             </li>
           ))}
         </ul>
+      )}
+      {tasks.length > 0 && (
+        <div className="flex justify-between items-center mt-6">
+          <button
+            onClick={handlePrevPage}
+            disabled={page === 1}
+            className={`px-4 py-2 rounded ${
+              page === 1
+                ? "bg-gray-300 text-gray-600 cursor-not-allowed"
+                : "bg-blue-600 text-white hover:bg-blue-700"
+            }`}
+          >
+            Anterior
+          </button>
+          <span className="text-sm text-gray-700">
+            Página <strong>{page}</strong> de <strong>{totalPages}</strong>
+          </span>
+          <button
+            onClick={handleNextPage}
+            disabled={page === totalPages}
+            className={`px-4 py-2 rounded ${
+              page === totalPages
+                ? "bg-gray-300 text-gray-600 cursor-not-allowed"
+                : "bg-blue-600 text-white hover:bg-blue-700"
+            }`}
+          >
+            Próxima
+          </button>
+        </div>
       )}
     </div>
   );
